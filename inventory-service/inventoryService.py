@@ -75,7 +75,7 @@ def read_inventory():
     else:
         with tracer.start_as_current_span("read_inventory"):
             databaseResponse = get(
-                "http://{}:80/get_inventory".format(DATABASE))
+                "http://{}:8088/get_inventory".format(DATABASE))
             assert databaseResponse.status_code == 200
             logs('Inventory', 'Read operation successful')
             logger.info('Inventory - Read operation successful')
@@ -96,7 +96,7 @@ def update_inventory():
                 qty = sum([val for val in rawData.getlist(itemId, type=int)])
 
                 databaseResponse = post(
-                    "http://{}:80/update_item".format(DATABASE),
+                    "http://{}:8088/update_item".format(DATABASE),
                     data={"ItemId": itemId, "Qty": qty})
 
                 if databaseResponse.status_code != 200:
@@ -126,13 +126,13 @@ def delete_inventory():
     else:
         with tracer.start_as_current_span("delete_inventory"):
             databaseResponse = get(
-                "http://{}:80/get_inventory".format(DATABASE),
+                "http://{}:8088/get_inventory".format(DATABASE),
             )
             assert databaseResponse.status_code == 200
 
             for itemId, qty in databaseResponse.json().items():
                 updateItemResponse = post(
-                    "http://{}:80/update_item".format(DATABASE),
+                    "http://{}:8088/update_item".format(DATABASE),
                     data={"ItemId": itemId, "Qty": -int(qty)},
                 )
                 assert updateItemResponse.status_code == 200
