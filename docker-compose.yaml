@@ -1,0 +1,82 @@
+version: '3'
+services:
+  analytics-service: 
+    restart: unless-stopped 
+    container_name: analytics
+    build:
+      context: ./analytics-service
+      dockerfile: analytics.Dockerfile
+    ports:
+      - "8087:8087"
+  database-service:  
+    restart: unless-stopped
+    container_name: database
+    build:
+      context: ./database-service
+      dockerfile: database.Dockerfile
+    ports:
+      - "8088:5000"
+    depends_on:
+      - mysql
+  order-service:  
+    restart: unless-stopped
+    container_name: order
+    build:
+      context: ./order-service
+      dockerfile: order.Dockerfile
+    ports:
+      - "8089:5000"
+  inventory-service:  
+    restart: unless-stopped
+    container_name: inventory
+    build:
+      context: ./inventory-service
+      dockerfile: inventory.Dockerfile
+    ports:
+      - "8090:5000"
+  payment-service:  
+    restart: unless-stopped
+    container_name: payment
+    build:
+      context: ./payment-service
+      dockerfile: payment.Dockerfile
+    ports:
+      - "8091:5000"
+  recommendation-service:
+    restart: unless-stopped  
+    container_name: recommendation
+    build:
+      context: ./recommendation-service
+      dockerfile: recommendation.Dockerfile
+    ports:
+      - "8092:5000"
+  authentication-service:  
+    restart: unless-stopped
+    container_name: authentication
+    build:
+      context: ./authentication-service
+      dockerfile: authentication.Dockerfile
+    ports:
+      - "8093:5000"
+  mysql:  
+    image: mysql:5.6
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+  client-react:  
+    restart: unless-stopped
+    container_name: client-react
+    build:
+      context: ./client
+      dockerfile: client.Dockerfile
+    ports:
+      - "8094:5000"
+  fluent-bit:
+    container_name: fluent-bit
+    restart: unless-stopped
+    image: fluent/fluent-bit
+    volumes:
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - /var/log/apache2/access.log:/var/log/access.log
