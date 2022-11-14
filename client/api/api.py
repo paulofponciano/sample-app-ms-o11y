@@ -17,15 +17,15 @@ from urllib3.util.retry import Retry
 
 import os, pkg_resources, socket, requests, logging
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
-ORDER = os.getenv("ORDER") if os.getenv("ORDER") is not None else "order"
-INVENTORY = os.getenv("INVENTORY") if os.getenv("INVENTORY") is not None else "inventory"
-PAYMENT = os.getenv("PAYMENT") if os.getenv("PAYMENT") is not None else "payment"
-AUTH = os.getenv("AUTH") if os.getenv("AUTH") is not None else "authentication"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
+ORDER = os.getenv("ORDER") if os.getenv("ORDER") is not None else "localhost"
+INVENTORY = os.getenv("INVENTORY") if os.getenv("INVENTORY") is not None else "localhost"
+PAYMENT = os.getenv("PAYMENT") if os.getenv("PAYMENT") is not None else "localhost"
+AUTH = os.getenv("AUTH") if os.getenv("AUTH") is not None else "localhost"
 SLEEP_TIME_IN_SECONDS = os.getenv("SLEEP_TIME_IN_SECONDS") if os.getenv("SLEEP_TIME_IN_SECONDS") is not None else 1
 
 DB_NAME = 'APM'
-HOST = os.getenv("MYSQL_HOST") if os.getenv("MYSQL_HOST") is not None else "mysql"
+HOST = os.getenv("MYSQL_HOST") if os.getenv("MYSQL_HOST") is not None else "localhost"
 PORT = int(os.getenv("MYSQL_PORT")) if os.getenv("MYSQL_PORT") is not None else 3306
 
 app = Flask(__name__, static_url_path='', static_folder='build', template_folder='build')
@@ -42,7 +42,7 @@ def cancelOrder():
     try:
         with tracer.start_as_current_span("client_cancel_order") as cancel_order_trace_group:
             trace_id=get_hexadecimal_trace_id(cancel_order_trace_group.get_span_context().trace_id)
-            cancelOrderAPIRequest = delete("http://{}:8089/clear_order".format(ORDER))
+            cancelOrderAPIRequest = delete("http://{}:5000/clear_order".format(ORDER))
             assert cancelOrderAPIRequest.status_code == 200
             return get_ref_link("Cancel", "success", trace_id)
     except:
@@ -56,7 +56,7 @@ def checkout():
         with tracer.start_as_current_span("client_checkout") as checkout_trace_group:
             trace_id = get_hexadecimal_trace_id(checkout_trace_group.get_span_context().trace_id)
             checkoutAPIRequest = post(
-                "http://{}:8091/checkout".format(PAYMENT),
+                "http://{}:5000/checkout".format(PAYMENT),
                 data=[
                     ("Metrics", 1),
                     ("ConfigMngmt", 2),
@@ -75,7 +75,7 @@ def createOrder():
         with tracer.start_as_current_span("client_create_order") as create_order_trace_group:
             trace_id = get_hexadecimal_trace_id(create_order_trace_group.get_span_context().trace_id)
             updateOrderAPIRequest = post(
-                "http://{}:8089/update_order".format(ORDER),
+                "http://{}:5000/update_order".format(ORDER),
                  data=[
                     ("Metrics", 1),
                     ("ConfigMngmt", 2),
@@ -94,7 +94,7 @@ def deliveryStatus():
     try:
         with tracer.start_as_current_span("client_delivery_status") as delivery_status_trace_group:
             trace_id = get_hexadecimal_trace_id(delivery_status_trace_group.get_span_context().trace_id)
-            getOrderAPIRequest = get("http://{}:8089/get_order".format(ORDER))
+            getOrderAPIRequest = get("http://{}:5000/get_order".format(ORDER))
             assert getOrderAPIRequest.status_code == 200
             return get_ref_link("Status", "success", trace_id)
     except:
@@ -109,7 +109,7 @@ def load_main_screen():
         # No retry because if error occurs we want to throw it to Kibana.
         loginSession = requests.Session()
         loginAPIResponse = loginSession.get(
-            "http://{}:8093/server_request_login".format(AUTH)
+            "http://{}:5000/server_request_login".format(AUTH)
         )
         loginSession.close()
         if loginAPIResponse.status_code != 200:
@@ -122,7 +122,7 @@ def payOrder():
     try:
         with tracer.start_as_current_span("client_pay_order") as pay_order_trace_group:
             trace_id = get_hexadecimal_trace_id(pay_order_trace_group.get_span_context().trace_id)
-            payOrderAPIRequest = post("http://{}:8089/pay_order".format(ORDER))
+            payOrderAPIRequest = post("http://{}:5000/pay_order".format(ORDER))
             assert payOrderAPIRequest.status_code == 200
             return get_ref_link("Pay", "success", trace_id)
     except:

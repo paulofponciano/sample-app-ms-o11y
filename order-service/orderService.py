@@ -26,9 +26,9 @@ DELETE_ERROR_RATE_THRESHOLD = 0
 
 app = Flask(__name__)
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
-DATABASE = os.getenv("DATABASE") if os.getenv("DATABASE") is not None else "mysql"
-LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "analytics"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
+DATABASE = os.getenv("DATABASE") if os.getenv("DATABASE") is not None else "localhost"
+LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "localhost"
 
 trace.set_tracer_provider(
     TracerProvider(
@@ -81,11 +81,11 @@ def update_order():
 
                 if qty >= 0:
                     databaseResponse = post(
-                        "http://{}:8088/add_item_to_cart".format(DATABASE),
+                        "http://{}:5000/add_item_to_cart".format(DATABASE),
                         data={"ItemId": itemId, "Qty": qty})
                 else:
                     databaseResponse = post(
-                        "http://{}:8088/remove_item_from_cart".format(DATABASE),
+                        "http://{}:5000/remove_item_from_cart".format(DATABASE),
                         data={"ItemId": itemId, "Qty": -qty})
 
                 if databaseResponse.status_code != 200:
@@ -115,7 +115,7 @@ def get_order():
     else:
         with tracer.start_as_current_span("get_order"):
             databaseResponse = get(
-                "http://{}:8088/get_cart".format(DATABASE))
+                "http://{}:5000/get_cart".format(DATABASE))
             assert databaseResponse.status_code == 200
             logs('Order', 'Read operation successful')
             logger.info('Order - Read operation successful')
@@ -131,7 +131,7 @@ def clear_order():
     else:
         with tracer.start_as_current_span("clear_order"):
             databaseResponse = put(
-                "http://{}:8088/cart_empty".format(DATABASE),
+                "http://{}:5000/cart_empty".format(DATABASE),
             )
             assert databaseResponse.status_code == 200
 
@@ -143,7 +143,7 @@ def clear_order():
 def pay_order():
     with tracer.start_as_current_span("pay_order"):
         databaseResponse = delete(
-            "http://{}:8088/cart_sold".format(DATABASE),
+            "http://{}:5000/cart_sold".format(DATABASE),
         )
         assert databaseResponse.status_code == 200
 

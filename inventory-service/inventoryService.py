@@ -26,9 +26,9 @@ DELETE_ERROR_RATE_THRESHOLD = 0
 
 app = Flask(__name__)
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
-DATABASE = os.getenv("DATABASE") if os.getenv("DATABASE") is not None else "mysql"
-LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "analytics"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
+DATABASE = os.getenv("DATABASE") if os.getenv("DATABASE") is not None else "localhost"
+LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "localhost"
 
 trace.set_tracer_provider(
     TracerProvider(
@@ -75,7 +75,7 @@ def read_inventory():
     else:
         with tracer.start_as_current_span("read_inventory"):
             databaseResponse = get(
-                "http://{}:8088/get_inventory".format(DATABASE))
+                "http://{}:5000/get_inventory".format(DATABASE))
             assert databaseResponse.status_code == 200
             logs('Inventory', 'Read operation successful')
             logger.info('Inventory - Read operation successful')
@@ -96,7 +96,7 @@ def update_inventory():
                 qty = sum([val for val in rawData.getlist(itemId, type=int)])
 
                 databaseResponse = post(
-                    "http://{}:8088/update_item".format(DATABASE),
+                    "http://{}:5000/update_item".format(DATABASE),
                     data={"ItemId": itemId, "Qty": qty})
 
                 if databaseResponse.status_code != 200:
@@ -126,13 +126,13 @@ def delete_inventory():
     else:
         with tracer.start_as_current_span("delete_inventory"):
             databaseResponse = get(
-                "http://{}:8088/get_inventory".format(DATABASE),
+                "http://{}:5000/get_inventory".format(DATABASE),
             )
             assert databaseResponse.status_code == 200
 
             for itemId, qty in databaseResponse.json().items():
                 updateItemResponse = post(
-                    "http://{}:8088/update_item".format(DATABASE),
+                    "http://{}:5000/update_item".format(DATABASE),
                     data={"ItemId": itemId, "Qty": -int(qty)},
                 )
                 assert updateItemResponse.status_code == 200

@@ -24,9 +24,9 @@ LOGIN_ERROR_RATE_THRESHOLD = 0
 
 app = Flask(__name__)
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
-RECOMMEND = os.getenv("RECOMMEND") if os.getenv("RECOMMEND") is not None else "recommendation"
-LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "analytics"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
+RECOMMEND = os.getenv("RECOMMEND") if os.getenv("RECOMMEND") is not None else "localhost"
+LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "localhost"
 
 trace.set_tracer_provider(
     TracerProvider(
@@ -82,7 +82,7 @@ def server_request_login():
     recommendationSession = requests.Session()
     recommendationSession.mount("http://", HTTPAdapter(max_retries=retry_strategy))
     getRecommendationAPIResponse = recommendationSession.get(
-        "http://{}:8092/recommend".format(RECOMMEND)
+        "http://{}:5000/recommend".format(RECOMMEND)
     )
     recommendationSession.close()
 

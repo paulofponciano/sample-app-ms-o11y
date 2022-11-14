@@ -24,9 +24,9 @@ ERROR_RATE_THRESHOLD = 100
 
 app = Flask(__name__)
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
-INVENTORY = os.getenv("INVENTORY") if os.getenv("INVENTORY") is not None else "inventory"
-LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "analytics"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
+INVENTORY = os.getenv("INVENTORY") if os.getenv("INVENTORY") is not None else "localhost"
+LOGS = os.getenv("LOGS") if os.getenv("LOGS") is not None else "localhost"
 
 trace.set_tracer_provider(
     TracerProvider(
@@ -86,7 +86,7 @@ def payment():
             soldInventorySession = requests.Session()
             soldInventorySession.mount("http://", HTTPAdapter(max_retries=retry_strategy))
             soldInventoryUpdateResponse = soldInventorySession.post(
-                "http://{}:8090/update_inventory".format(INVENTORY),
+                "http://{}:5000/update_inventory".format(INVENTORY),
                 data=data,
             )
             soldInventorySession.close()
