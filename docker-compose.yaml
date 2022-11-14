@@ -11,6 +11,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -30,6 +31,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -52,6 +54,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -71,6 +74,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -90,6 +94,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -109,6 +114,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -128,6 +134,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
@@ -155,6 +162,7 @@ services:
     environment:
       OTLP: '172.28.9.36' #Set your otel-collector endpoint
       RECOMMEND: 'recommendation' #Container_name
+      DATABASE: 'database' #Container_name
       LOGS: 'analytics' #Container_name
       AUTH: 'authentication' #Container_name
       ORDER: 'order' #Container_name
