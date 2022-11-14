@@ -8,6 +8,17 @@ services:
       dockerfile: analytics.Dockerfile
     ports:
       - "8087:8087"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   database-service:  
     restart: unless-stopped
     container_name: database
@@ -16,8 +27,20 @@ services:
       dockerfile: database.Dockerfile
     ports:
       - "8088:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
     depends_on:
       - mysql
+    
+      
   order-service:  
     restart: unless-stopped
     container_name: order
@@ -26,6 +49,17 @@ services:
       dockerfile: order.Dockerfile
     ports:
       - "8089:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   inventory-service:  
     restart: unless-stopped
     container_name: inventory
@@ -34,6 +68,17 @@ services:
       dockerfile: inventory.Dockerfile
     ports:
       - "8090:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   payment-service:  
     restart: unless-stopped
     container_name: payment
@@ -42,6 +87,17 @@ services:
       dockerfile: payment.Dockerfile
     ports:
       - "8091:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   recommendation-service:
     restart: unless-stopped  
     container_name: recommendation
@@ -50,6 +106,17 @@ services:
       dockerfile: recommendation.Dockerfile
     ports:
       - "8092:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   authentication-service:  
     restart: unless-stopped
     container_name: authentication
@@ -58,6 +125,17 @@ services:
       dockerfile: authentication.Dockerfile
     ports:
       - "8093:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+    
   mysql:  
     image: mysql:5.6
     container_name: mysql
@@ -65,6 +143,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
   client-react:  
     restart: unless-stopped
     container_name: client-react
@@ -73,6 +152,17 @@ services:
       dockerfile: client.Dockerfile
     ports:
       - "8094:5000"
+    environment:
+      OTLP: '172.28.9.36' #Set your otel-collector endpoint
+      RECOMMEND: 'recommendation' #Container_name
+      LOGS: 'analytics' #Container_name
+      AUTH: 'authentication' #Container_name
+      ORDER: 'order' #Container_name
+      PAYMENT: 'payment' #Container_name
+      INVENTORY: 'inventory' #Container_name
+      MYSQL_HOST: 'mysql' #Container_name
+      MYSQL_PORT: '3306'
+
   fluent-bit:
     container_name: fluent-bit
     restart: unless-stopped

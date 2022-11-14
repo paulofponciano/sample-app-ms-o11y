@@ -22,7 +22,7 @@ import socket
 
 app = Flask(__name__)
 
-OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "opensearch.pauloponciano.pro"
+OTLP = os.getenv("OTLP") if os.getenv("OTLP") is not None else "localhost"
 
 trace.set_tracer_provider(
     TracerProvider(
