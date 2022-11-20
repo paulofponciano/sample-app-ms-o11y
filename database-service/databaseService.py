@@ -1,4 +1,3 @@
-# DatabaseService running on port 8083.
 
 import mysql.connector
 from flask import Flask, jsonify, request

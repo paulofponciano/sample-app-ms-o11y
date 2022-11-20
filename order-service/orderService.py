@@ -1,4 +1,3 @@
-# OrderService running on port 8088
 
 from flask import Flask, jsonify, request, Response
 import logging

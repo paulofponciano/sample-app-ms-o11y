@@ -1,4 +1,3 @@
-# InventoryService running on port 8082
 
 from flask import Flask, jsonify, request, Response
 import logging

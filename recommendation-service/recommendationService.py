@@ -1,4 +1,3 @@
-# RecommendationService running on port 8086
 
 from flask import Flask, jsonify, request
 import logging

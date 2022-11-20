@@ -1,4 +1,3 @@
-# PaymentService running on port 8084
 
 from flask import Flask, jsonify, request, make_response
 import logging
